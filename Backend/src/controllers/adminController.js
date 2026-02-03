@@ -1,0 +1,414 @@
+
+const User = require('../models/userModel');
+const Property = require("../models/propertyModel");
+const CancellationPolicy = require('../models/cancellationPolicyModel');
+const Booking=require("../models/bookingModel");
+module.exports = {
+    home: (req, res) => {
+        res.send("hello admin")
+    },
+    blockUser: async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User doesn't exist"
+                });
+            }
+            if (user.userStatus === "blocked") {
+                return res.status(400).json({
+                    success: false,
+                    message: "User is already blocked"
+                });
+
+            }
+            user.userStatus = "blocked";
+            await user.save();
+            return res.status(200).json({
+                success: true,
+                message: "User banned successfully",
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role
+                }
+            })
+
+        }
+        catch (error) {
+            console.error("Block user error", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal Server error"
+            });
+
+
+        }
+    },
+
+    unblockUser: async (req, res) => {
+        try {
+            const id = req.params.id;
+            const user = await User.findById(id);
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                });
+            }
+            if (user.userStatus == "active") {
+                return res.status(400).json({
+                    success: false,
+                    message: "User is already unblocked"
+
+                });
+            }
+            user.userStatus = "active";
+            await user.save()
+
+            res.status(200).json({
+                success: true,
+                message: "User unblocked successfully"
+            })
+
+        }
+        catch (error) {
+            console.error("Error during unblocking user", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal Server error"
+            });
+
+
+        }
+    },
+    blockHost: async (req, res) => {
+        try {
+            const hostId = req.params.id;
+            const host = await User.findById(hostId);
+            if (!host) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Host doesnt exist"
+                });
+            }
+            if (host.hostStatus == "blocked") {
+                return res.status(400).json({
+                    success: false,
+                    message: "Host already blocked"
+                });
+            }
+            host.hostStatus = "blocked";
+            await host.save();
+            return res.status(200).json({
+                success: false,
+                message: "Host bloacked successfully"
+            });
+
+
+        }
+        catch (error) {
+            console.error("Error bloacking host");
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+
+        }
+
+    },
+    unblockHost: async (req, res) => {
+        try {
+            const hostId = req.params.id;
+            const host = await User.findById(hostId);
+            if (!host) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Host not found"
+                });
+            }
+            if (host.hostStatus == "active") {
+                return res.status(400).json({
+                    success: false,
+                    message: "Host is already unblocked"
+
+                });
+            }
+            host.hostStatus = "active";
+            await host.save()
+
+            res.status(200).json({
+                success: true,
+                message: " Host unblocked successfully"
+            })
+
+        }
+        catch (error) {
+            console.error("Error during unblocking Host", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal Server error"
+            });
+
+
+        }
+    },
+    approveHost: async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User doesnt exist"
+                });
+            }
+            if (user.role === "host" && user.hostStatus === "active") {
+                return res.status(400).json({
+                    success: false,
+                    message: "User is already a approved host"
+                });
+            }
+            user.role = "host";
+            user.hostStatus = "active";
+            await user.save();
+            return res.status(200).json({
+                success: true,
+                message: "Host approved successfully",
+                user,
+            });
+
+
+        }
+        catch (error) {
+            console.error("Error approving host");
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+
+        }
+
+    },
+    getAllUsers: async (req, res) => {
+        try {
+            const roleFilter = req.query.role; // "user" or "host"
+
+            let query = { role: { $ne: "admin" } }; // exclude admins
+            if (roleFilter) {
+                query.role = roleFilter;             // apply role filter if provided
+            }
+            const users = await User.find(query, '-password') //exclude password
+            res.status(200).json({
+                success: true,
+                message: "User fetchedd successfully",
+                count: users.length,
+                users: users.map(user => ({
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    isActive: user.isActive
+
+                }))
+            });
+
+        }
+        catch (error) {
+            console.error("Error during fetching users", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            })
+
+        }
+    },
+    getProperties: async (req, res) => {
+        try {
+            const statusFilter = req.query.status;
+            const query = {};
+            if (statusFilter) {
+                query.status = statusFilter;
+            }
+            const property = await Property.find(query).populate("host", "name email");
+            res.status(200).json({
+                success: true,
+                message: "Property fetched successfully",
+                count: property.length,
+                property
+            });
+
+        }
+        catch (error) {
+            console.error("Error fetching property:", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            })
+
+        }
+    },
+    approveProperty: async (req, res) => {
+        try {
+            const propertyId = req.params.id;
+            const property = await Property.findById(propertyId);
+            if (!property) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Property not found"
+                });
+            }
+            if (property.status == "approved") {
+                return res.status(400).json({
+                    success: false,
+                    message: "Property approved already"
+                });
+            }
+            property.status = "approved";
+            await property.save();
+            res.status(200).json({
+                success: true,
+                message: "Property approved"
+            });
+
+        }
+        catch (error) {
+            console.error("Error approving property", error);
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            })
+
+        }
+    },
+    rejectProperty: async (req, res) => {
+        try {
+            const propertyId = req.params.id;
+            const property = await Property.findById(propertyId);
+            if (!property) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Property not found"
+                });
+            }
+            if (property.status == "rejected") {
+                return res.status(404).json({
+                    success: false,
+                    message: "Property already rejected"
+                });
+            }
+            property.status = "rejected";
+            await property.save();
+            res.status(200).json({
+                success: true,
+                message: "Property rejected successfully"
+            });
+
+        }
+        catch (error) {
+            console.error("Error rejecting property", error);
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+
+        }
+    },
+    setCancellationPolicy: async (req, res) => {
+        try {
+            const { fullRefundDays, partialRefundDays, partialRefundPercent } = req.body;
+            if (fullRefundDays == null || partialRefundDays == null || partialRefundPercent == null) {
+                return res.status(400).json({
+                    success: false,
+                    message: "All fields are required"
+                });
+            }
+            let policy = await CancellationPolicy.findOne();
+            if (policy) {
+                policy.fullRefundBeforeDays = fullRefundDays,
+                    policy.partialRefundBeforeDays = partialRefundDays,
+                    policy.partialRefundPercent = partialRefundPercent,
+                    policy.updatedBy = req.user.id;
+                await policy.save();
+                return res.status(200).json({
+                    success: true,
+                    message: "Cancellation policy updated  successfullly.",
+                    policy
+                });
+            }
+            else {
+                const policy = await CancellationPolicy.create({
+                    fullRefundBeforeDays: fullRefundDays,
+                    partialRefundBeforeDays: partialRefundDays,
+                    partialRefundPercent: partialRefundPercent,
+                    updatedBy: req.user.id
+                });
+                return res.status(201).json({
+                    success: true,
+                    message: "Policy created successfully.",
+                    policy
+                });
+            }
+
+        }
+        catch (error) {
+            console.error("Policy creation error", error);
+            return res.status(500).json({
+                success: false,
+                message: "Internal servere error"
+            });
+
+        }
+    },
+    getAllBookings:async(req,res)=>{
+        try{
+            const statusFilter=req.query.status;
+            const filter={};
+            if(statusFilter){
+                filter.status=statusFilter;
+            }
+            const bookings=await Booking.find(filter).populate("user","name email").populate("property","title location pricePerNight");
+            if(bookings.length===0){
+                return res.status(200).json({
+                    success:true,
+                    message:"No bookings yet",
+                    count:0,
+                    bookings:[]
+                });
+            }
+            return res.status(200).json({
+                success:true,
+                message:"Booking fetched successfully",
+                count:bookings.length,
+                bookings
+            });
+
+
+        }
+        catch(error){
+            console.error("Error while fetching booking",error);
+            res.status(500).json({
+                success:false,
+                message:"Internal server error"
+            });
+
+        }
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+};
