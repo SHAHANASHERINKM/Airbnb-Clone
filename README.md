@@ -28,7 +28,7 @@ NestAway is a full-featured property rental platform where hosts can list their 
 - **Availability Management** – Block dates when you're unavailable or doing maintenance
 - **Dashboard** – Track your properties, bookings, and guest interactions in one place
 - **Property Status** – Submit properties for approval before they go live
-- **Analytics** – See your average rating and total reviews to improve your listing
+
 
 ### For Admins
 - **User Management** – View all users, block accounts if needed
@@ -36,7 +36,6 @@ NestAway is a full-featured property rental platform where hosts can list their 
 - **Property Moderation** – Approve or reject property listings before they appear publicly
 - **Booking Overview** – Monitor all bookings across the platform
 - **Cancellation Policies** – Adjust refund policies and thresholds
-- **System Health** – Track ratings, reviews, and platform activity
 
 ---
 
@@ -299,9 +298,6 @@ All endpoints require the base URL: `http://localhost:5000/api`
 - [ ] Advanced analytics for hosts
 - [ ] Mobile app (React Native)
 
-## License
-
-ISC
 
 ---
 
