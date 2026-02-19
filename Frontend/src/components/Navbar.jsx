@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'
 import { fetchUser, logout } from '../redux/slices/authSlice';
 import { becomeHost } from '../services/userService';
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.svg";
 
 
 
