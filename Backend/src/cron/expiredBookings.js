@@ -1,6 +1,6 @@
 const cron=require("node-cron");
 const Booking=require("../models/bookingModel");
- cron.schedule("*/5 * * * *",async()=>{
+ cron.schedule("*/2 * * * *",async()=>{
     console.log("Running booking cleanup job....");
     
     await Booking.deleteMany({

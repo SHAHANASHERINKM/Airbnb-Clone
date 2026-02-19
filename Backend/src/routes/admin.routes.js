@@ -10,12 +10,14 @@ router.patch('/block-user/:id',authMiddleware,roleMiddleware("admin"),adminContr
 router.patch('/unblock-user/:id',authMiddleware,roleMiddleware("admin"),adminController.unblockUser);
 router.patch('/block-host/:id',authMiddleware,roleMiddleware("admin"),adminController.blockHost);
 router.patch('/unblock-host/:id',authMiddleware,roleMiddleware("admin"),adminController.unblockHost);
-router.patch('/host-approval/:id',authMiddleware,roleMiddleware("admin"),adminController.approveHost)
-router.get('/users',authMiddleware,roleMiddleware("admin"),adminController.getAllUsers);  //query for user and host
-router.get('/properties',authMiddleware,roleMiddleware("admin"),adminController.getProperties);  //Query based on status.
+router.patch('/host-approval/:id',authMiddleware,roleMiddleware("admin"),adminController.approveHost);
+router.patch('/host-rejection/:id',authMiddleware,roleMiddleware("admin"),adminController.rejectHost);
+router.get('/users',authMiddleware,roleMiddleware("admin"),adminController.getAllUsers);  //query for user and host //status filter
+router.get('/properties',authMiddleware,roleMiddleware("admin"),adminController.getProperties);  //Query based on status of property.
 router.patch('/property/:id/approve',authMiddleware,roleMiddleware("admin"),adminController.approveProperty);
 router.patch('/property/:id/reject',authMiddleware,roleMiddleware('admin'),adminController.rejectProperty);
 router.post("/cancellation-policy",authMiddleware,roleMiddleware("admin"),adminController.setCancellationPolicy);
 router.get('/bookings',authMiddleware,roleMiddleware("admin"),adminController.getAllBookings);
+router.get('/counts',authMiddleware,roleMiddleware("admin"),adminController.adminDashboardCounts);
 
 module.exports=router;

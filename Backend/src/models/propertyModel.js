@@ -51,7 +51,10 @@ const propertySchema = new Schema({
       public_id: { type: String, required: true }
     }
   ],
-  validate: v => v.length > 0 // still ensures at least 1 image
+  validate: [
+      (val) => val.length >= 1 && val.length <= 5,
+      "A property must have between 1 and 5 images"
+    ]
 },
     amenities:{ type:[String],
         enum:AMENITIES,

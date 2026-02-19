@@ -2,7 +2,7 @@
 const User = require('../models/userModel');
 const Property = require("../models/propertyModel");
 const CancellationPolicy = require('../models/cancellationPolicyModel');
-const Booking=require("../models/bookingModel");
+const Booking = require("../models/bookingModel");
 module.exports = {
     home: (req, res) => {
         res.send("hello admin")
@@ -33,7 +33,9 @@ module.exports = {
                     id: user._id,
                     name: user.name,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    userStatus: user.userStatus,
+                    createdAt: user.createdAt
                 }
             })
 
@@ -71,7 +73,15 @@ module.exports = {
 
             res.status(200).json({
                 success: true,
-                message: "User unblocked successfully"
+                message: "User unblocked successfully",
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    userStatus: user.userStatus,
+                    createdAt: user.createdAt
+                }
             })
 
         }
@@ -105,7 +115,16 @@ module.exports = {
             await host.save();
             return res.status(200).json({
                 success: false,
-                message: "Host bloacked successfully"
+                message: "Host bloacked successfully",
+                user: {
+                    id: host._id,
+                    name: host.name,
+                    email: host.email,
+                    role: host.role,
+                    hostStatus: host.hostStatus,
+                    createdAt: host.createdAt
+                }
+
             });
 
 
@@ -142,7 +161,15 @@ module.exports = {
 
             res.status(200).json({
                 success: true,
-                message: " Host unblocked successfully"
+                message: " Host unblocked successfully",
+                user: {
+                    id: host._id,
+                    name: host.name,
+                    email: host.email,
+                    role: host.role,
+                    hostStatus: host.hostStatus,
+                    createdAt: host.createdAt
+                }
             })
 
         }
@@ -159,6 +186,7 @@ module.exports = {
     approveHost: async (req, res) => {
         try {
             const userId = req.params.id;
+            console.log("Approving host with ID:", userId);
             const user = await User.findById(userId);
             if (!user) {
                 return res.status(404).json({
@@ -193,47 +221,107 @@ module.exports = {
         }
 
     },
+
+    rejectHost: async (req, res) => {
+        try {
+            const userId = req.params.id;
+
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User doesnt exist"
+                });
+            }
+            if (user.role === "user" && user.hostStatus === "rejected") {
+                return res.status(400).json({
+                    success: false,
+                    message: "User is already rejected"
+                });
+            }
+            user.role = "user";
+            user.hostStatus = "rejected";
+            await user.save();
+            return res.status(200).json({
+                success: true,
+                message: "Host rejected successfully",
+                user,
+            });
+
+
+        }
+        catch (error) {
+            console.error("Error rejecting host", error);
+            return res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+
+        }
+
+    },
+
     getAllUsers: async (req, res) => {
         try {
-            const roleFilter = req.query.role; // "user" or "host"
+            // console.log("Fetching users with query:", req.query);
+            const roleFilter = req.query.role;
+            const hostStatusFilter = req.query.hostStatus;
+            const recent = req.query.recent;
 
-            let query = { role: { $ne: "admin" } }; // exclude admins
-            if (roleFilter) {
-                query.role = roleFilter;             // apply role filter if provided
+            let query = { role: { $ne: "admin" } };
+
+            if (roleFilter) query.role = roleFilter;
+            if (hostStatusFilter) query.hostStatus = hostStatusFilter;
+
+            let queryBuilder = User.find(query, "-password").sort({ createdAt: -1 });
+
+            if (recent === "true") {
+                queryBuilder = queryBuilder.limit(5);
             }
-            const users = await User.find(query, '-password') //exclude password
+
+            const users = await queryBuilder;
+
             res.status(200).json({
                 success: true,
-                message: "User fetchedd successfully",
+                message: "Users fetched successfully",
                 count: users.length,
+
                 users: users.map(user => ({
                     id: user._id,
                     name: user.name,
                     email: user.email,
                     role: user.role,
-                    isActive: user.isActive
+                    isActive: user.isActive,
+                    hostStatus: user.hostStatus,
+                    userStatus: user.userStatus,
+                    createdAt: user.createdAt,
+                    hostRequestedAt: user.hostRequestedAt
+
 
                 }))
             });
 
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error during fetching users", error);
             res.status(500).json({
                 success: false,
                 message: "Internal server error"
-            })
-
+            });
         }
     },
     getProperties: async (req, res) => {
         try {
             const statusFilter = req.query.status;
+            const recent = req.query.recent;
             const query = {};
             if (statusFilter) {
                 query.status = statusFilter;
             }
-            const property = await Property.find(query).populate("host", "name email");
+            let queryBuilder = Property.find(query).populate("host", "name email").sort({ createdAt: -1 });
+            if (recent === "true") {
+                queryBuilder = queryBuilder.limit(5);
+            }
+            const property = await queryBuilder;
             res.status(200).json({
                 success: true,
                 message: "Property fetched successfully",
@@ -271,7 +359,8 @@ module.exports = {
             await property.save();
             res.status(200).json({
                 success: true,
-                message: "Property approved"
+                message: "Property approved",
+                property
             });
 
         }
@@ -304,7 +393,8 @@ module.exports = {
             await property.save();
             res.status(200).json({
                 success: true,
-                message: "Property rejected successfully"
+                message: "Property rejected successfully",
+                property
             });
 
         }
@@ -363,41 +453,70 @@ module.exports = {
 
         }
     },
-    getAllBookings:async(req,res)=>{
-        try{
-            const statusFilter=req.query.status;
-            const filter={};
-            if(statusFilter){
-                filter.status=statusFilter;
+    getAllBookings: async (req, res) => {
+        try {
+            const statusFilter = req.query.status;
+            const filter = {};
+            if (statusFilter) {
+                filter.status = statusFilter;
             }
-            const bookings=await Booking.find(filter).populate("user","name email").populate("property","title location pricePerNight");
-            if(bookings.length===0){
+            const bookings = await Booking.find(filter).populate("user", "name email").populate("property", "title location pricePerNight");
+            if (bookings.length === 0) {
                 return res.status(200).json({
-                    success:true,
-                    message:"No bookings yet",
-                    count:0,
-                    bookings:[]
+                    success: true,
+                    message: "No bookings yet",
+                    count: 0,
+                    bookings: []
                 });
             }
             return res.status(200).json({
-                success:true,
-                message:"Booking fetched successfully",
-                count:bookings.length,
+                success: true,
+                message: "Booking fetched successfully",
+                count: bookings.length,
                 bookings
             });
 
 
         }
-        catch(error){
-            console.error("Error while fetching booking",error);
+        catch (error) {
+            console.error("Error while fetching booking", error);
             res.status(500).json({
-                success:false,
-                message:"Internal server error"
+                success: false,
+                message: "Internal server error"
             });
 
         }
+    },
+
+    adminDashboardCounts: async (req, res) => {
+        try {
+            const usersCount = await User.countDocuments({ role: { $ne: "admin" } });
+
+            const hostsCount = await User.countDocuments({ role: "host" });
+            const propertiesCount = await Property.countDocuments();
+            const bookingsCount = await Booking.countDocuments();
+            res.status(200).json({
+                success: true,
+                message: "Counts fetched successfully",
+                counts: {
+                    users: usersCount,
+                    hosts: hostsCount,
+                    properties: propertiesCount,
+                    bookings: bookingsCount
+                }
+            });
+
+
+
+        }
+        catch (error) {
+            console.error("Error fetching dashboard counts", error);
+            res.status(500).json({
+                success: false,
+                message: "Internal server error"
+            });
+        }
     }
-    
 
 
 

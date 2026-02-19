@@ -1,6 +1,8 @@
 const Property = require('../models/propertyModel')
 const cloudinary = require("../config/cloudinary");
-const Booking=require("../models/bookingModel");
+const Booking = require("../models/bookingModel");
+const { getAllBookings } = require('./adminController');
+const WishList = require("../models/wishlistModel");
 module.exports = {
   home: (req, res) => {
     res.send("hello host")
@@ -18,9 +20,13 @@ module.exports = {
         }
       }
 
-      if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ message: "At least one image is required" });
+      if (!req.files || req.files.length !== 5) {
+        return res.status(400).json({ message: "5 image are required" });
       }
+
+      const blockedDate = req.body.blockedDate
+  ? JSON.parse(req.body.blockedDate)
+  : [];
 
       // Upload images to Cloudinary
       for (const file of req.files) {
@@ -44,6 +50,7 @@ module.exports = {
       // Save property in DB
       const property = await Property.create({
         ...req.body,
+          blockedDate, 
         images,
         host: hostId,
         status: "pending",
@@ -106,9 +113,14 @@ module.exports = {
         return res.status(404).json({ success: false, message: "Property not found" });
       }
 
-      if (property.host.toString() !== hostId) {
+      if (property.host.toString() !== hostId.toString()) {
         return res.status(403).json({ success: false, message: "Not authorized" });
       }
+
+      if (req.body.blockedDate && typeof req.body.blockedDate === "string") {
+  req.body.blockedDate = JSON.parse(req.body.blockedDate);
+}
+
 
       // ================= DELETE IMAGES =================
       if (req.body.removeImages) {
@@ -169,6 +181,7 @@ module.exports = {
   deleteProperty: async (req, res) => {
     try {
       const propertyId = req.params.id;
+      // console.log("idddddddddd",propertyId);
       const hostId = req.user.id;
       const property = await Property.findById(propertyId);
       if (!property) {
@@ -177,7 +190,7 @@ module.exports = {
           message: "Property not found"
         });
       }
-      if (property.host.toString() !== hostId) {
+      if (property.host.toString() !== hostId.toString()) {
         return res.status(403).json({
           success: false,
           message: "Not authorised to delete this property"
@@ -195,6 +208,9 @@ module.exports = {
         }
       }
       await Property.findByIdAndDelete(propertyId);
+
+      await WishList.deleteMany({ property: propertyId });
+
       res.status(200).json({
         success: false,
         message: "Property deleted successfully"
@@ -210,52 +226,52 @@ module.exports = {
     }
   },
   //booking for a single property
-  getBookings:async(req,res)=>{
-    try{
-      const propertyId=req.params.id;
-      
-      const statusFilter=req.query.status;
-      const filter={};
-      if(statusFilter){
-        filter.status=statusFilter;
+  getBookings: async (req, res) => {
+    try {
+      const propertyId = req.params.id;
+
+      const statusFilter = req.query.status;
+      const filter = {};
+      if (statusFilter) {
+        filter.status = statusFilter;
       }
-      filter.property=propertyId;
-      const property=await Property.findById(propertyId);
-      if(!property){
+      filter.property = propertyId;
+      const property = await Property.findById(propertyId);
+      if (!property) {
         return res.status(404).json({
-          success:false,
-          message:"Property not found"
+          success: false,
+          message: "Property not found"
         });
 
       }
-      
-      if(property.host.toString()!==req.user.id.toString()){
+
+      if (property.host.toString() !== req.user.id.toString()) {
         return res.status(403).json({
-          success:false,
-          message:"Access denieddd"
+          success: false,
+          message: "Access denieddd"
         });
       }
-      const bookings=await Booking.find(filter).populate("user","name email").populate("property","title location pricePerNight");
-      if(bookings.length===0){
+      const bookings = await Booking.find(filter).populate("user", "name email").populate("property", "title location pricePerNight");
+      if (bookings.length === 0) {
         return res.status(200).json({
-          success:true,
-          message:`No ${statusFilter} property`,
-          count:0,
-          bookings:[]
+          success: true,
+          message: `No ${statusFilter} property`,
+          count: 0,
+          bookings: []
         });
       }
 
       return res.status(200).json({
-        success:true,
-        message:"Bookings fetched successfully",
-        count:bookings.length,
+        success: true,
+        message: "Bookings fetched successfully",
+        count: bookings.length,
         bookings
       });
 
 
 
     }
-    catch(error){
+    catch (error) {
       console.error("Booking fetch error:", error);
       res.status(500).json({
         success: false,
@@ -263,6 +279,54 @@ module.exports = {
       })
 
 
+    }
+  },
+
+  getAllBookings: async (req, res) => {
+    try {
+      const hostId = req.user.id;
+
+
+      const { recent } = req.query;
+
+      const totalCount = await Booking.countDocuments({ host: hostId });
+
+      let query = Booking.find({ host: hostId })
+        .populate("property")
+        .sort({ createdAt: -1 });
+
+
+      if (recent === "true") {
+        query = query.limit(5);
+      }
+
+      const bookings = await query;
+
+      if (!bookings.length) {
+        return res.status(200).json({
+          success: true,
+          message: "No bookings found",
+          totalCount:0,
+          count: 0,
+          bookings: [],
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Bookings fetched successfully",
+        totalCount,
+        count: bookings.length,
+        bookings,
+      });
+
+    } catch (error) {
+      console.error("fetch booking error:", error);
+
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
     }
   }
 

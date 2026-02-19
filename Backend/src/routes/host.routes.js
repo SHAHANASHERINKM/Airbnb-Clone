@@ -13,4 +13,5 @@ router.get("/properties",authMiddleware,roleMiddleware("host"),hostController.ge
 router.patch("/property/:id",authMiddleware,roleMiddleware("host"),hostBlockMiddleware,upload.array("images",5),hostController.updateProperty);
 router.delete("/property/:id",authMiddleware,roleMiddleware("host"),hostBlockMiddleware,hostController.deleteProperty);
 router.get("/property/:id/bookings",authMiddleware,roleMiddleware("host"),hostController.getBookings);
+router.get("/AllBookings" ,authMiddleware,roleMiddleware("host"),hostController.getAllBookings)
 module.exports=router;

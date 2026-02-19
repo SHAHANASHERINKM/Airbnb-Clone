@@ -46,7 +46,9 @@ module.exports = {
                 user: {
                     name: user.name,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    hostStatus: user.hostStatus,
+                    userStatus: user.userStatus,
 
                 },
                 token
@@ -76,7 +78,7 @@ module.exports = {
             if (!user) {
                 return res.status(401).json({
                     success: false,
-                    messsage: "Invalid email or password"
+                    message: "Invalid email or password"
                 })
             }
             const isMatch = await user.comparePassword(password);
@@ -109,7 +111,10 @@ module.exports = {
                     id: user._id,
                     name: user.name,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    userStatus:user.userStatus,
+                    hostStatus:user.hostStatus,
+                    
                 }
             });
 

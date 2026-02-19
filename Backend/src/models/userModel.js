@@ -29,9 +29,13 @@ const userSchema = new mongoose.Schema(
 
     hostStatus: {
       type: String,
-      enum: ["active", "blocked","pending"],
+      enum: ["active", "blocked","pending","rejected"],
       default: null,
-    }
+    },
+    hostRequestedAt: {
+  type: Date,
+  default: null,
+},
   },
   { timestamps: true }
 );

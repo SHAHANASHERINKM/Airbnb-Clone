@@ -128,7 +128,7 @@ module.exports = {
                 totalPrice,
                 status: "pending",
                 paymentStatus: "pending",
-                expiresAt: Date.now() + 10 * 60 * 1000
+                expiresAt: Date.now() + 15 * 60 * 1000
 
             });
             res.status(201).json({
@@ -154,6 +154,12 @@ module.exports = {
                 return res.status(404).json({
                     success: true,
                     message: 'Booking not found'
+                });
+            }
+            if(booking.paymentStatus==="paid"){
+                return res.status(400).json({
+                    success:false,
+                    message:"Already paid"
                 });
             }
             booking.status = "confirmed";
@@ -264,6 +270,41 @@ module.exports = {
 
         }
 
+    },
+
+    getSinlgeBooking:async(req,res)=>{
+        try{
+            const userId=req.user.id;
+            const bookingId=req.params.id;
+            const booking=await Booking.findById(bookingId).populate("property");
+            if(!booking){
+                return res.status(404).json({
+                    success:false,
+                    message:"Booking not found"
+                });
+            }
+           
+            if(booking.user.toString() !== userId.toString()){
+                return res.status(403).json({
+                    success:false,
+                    message:"Unauthorised"
+                })
+            }
+            return res.status(200).json({
+                success:true,
+                message:"Booking fetched successfully",
+                booking
+            });
+
+        }
+        catch(error){
+            console.error("Error fetching booking",error);
+            res.status(500).json({
+                success:false,
+                message:"Internal server error"
+            });
+
+        }
     }
 
 

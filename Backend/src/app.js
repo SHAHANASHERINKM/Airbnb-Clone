@@ -2,12 +2,15 @@ const express = require('express');
 const app=express();
 const dotenv=require('dotenv');
 const routes=require('./routes/index')
-const connectDB=require('./config/db')
-
+const connectDB=require('./config/db');
+const cors=require("cors");
 
 dotenv.config();
 const port=process.env.PORT  || 5000;
 
+app.use(cors({
+    origin:"http://localhost:3000"  
+}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
