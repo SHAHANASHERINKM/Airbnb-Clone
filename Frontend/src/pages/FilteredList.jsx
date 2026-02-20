@@ -4,17 +4,16 @@ import PropertyGrid from '../components/PropertyGrid';
 import CategoryBanner from '../components/CategoryBanner';
 
 function FilteredList() {
- 
-    const allProperties=useSelector(state=>state.properties.filteredProperties);
 
- 
+  const allProperties = useSelector(state => state.properties.filteredProperties);
+
   return (
     <div className='w-full' >
-      <CategoryBanner/>
-      <PropertyGrid properties={allProperties}/>
+      <CategoryBanner />
+      <PropertyGrid properties={allProperties} />
     </div>
   )
-  
+
 }
 
 export default FilteredList

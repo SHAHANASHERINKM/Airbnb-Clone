@@ -12,17 +12,17 @@ export default function CategoryBanner() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
- const handleFilterApply = (filters) => {
-  dispatch(fetchProperties(filters));
-  navigate("/filter");
-  setFilterOpen(false);
-};
+  const handleFilterApply = (filters) => {
+    dispatch(fetchProperties(filters));
+    navigate("/filter");
+    setFilterOpen(false);
+  };
 
   const handleCategory = async (type) => {
     setActiveCategory(type);
     dispatch(fetchProperties({ propertyType: type })); // store in filteredProperties
     navigate("/filter");
-}
+  }
 
 
   return (

@@ -49,7 +49,6 @@ function UsersList() {
             );
               alert(res.message);
 
-
         }
         catch(error){
       alert(error?.response?.data?.message || "Failed to approve host");

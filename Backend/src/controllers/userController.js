@@ -195,79 +195,102 @@ module.exports = {
 
         }
     },
-    addReview: async (req, res) => {
-        try {
-            const { bookingId, rating, comment } = req.body;
-            const userId = req.user.id;
-            const booking = await Booking.findById(bookingId);
-            if (!booking) {
-                return res.status(404).json({
-                    success: false,
-                    message: "Booking not found"
-                });
-            }
-            if (booking.status !== "completed") {
-                return res.status(400).json({
-                    message: "You can review after checkout."
-                });
+   addReview: async (req, res) => {
+    try {
+        const { bookingId, rating, comment } = req.body;
+        const userId = req.user.id;
 
-            }
-            const existingReview = await Review.findOne({ booking: bookingId });
-            if (existingReview) {
-                return res.status(400).json({
-                    message: "Review already submitted."
-                });
-            }
-            const review = await Review.create({
-                user: userId,
-                booking: bookingId,
-                property: booking.property,
-                rating,
-                comment
-            });
-            res.json({
-                success: true,
-                message: "Review added successfully.",
-                review
-            });
-
-
-        }
-        catch (error) {
-            console.error("Review error", error);
-            res.json({
+        const booking = await Booking.findById(bookingId);
+        if (!booking) {
+            return res.status(404).json({
                 success: false,
-                message: "Internal server error"
+                message: "Booking not found"
             });
-
         }
-    },
+
+        if (booking.status !== "completed") {
+            return res.status(400).json({
+                message: "You can review after checkout."
+            });
+        }
+
+        const existingReview = await Review.findOne({ booking: bookingId });
+        if (existingReview) {
+            return res.status(400).json({
+                message: "Review already submitted."
+            });
+        }
+
+        const review = await Review.create({
+            user: userId,
+            booking: bookingId,
+            property: booking.property,
+            rating,
+            comment
+        });
+
+        booking.isReviewed = true;
+        await booking.save();
+
+        // 🔥 Update Property Rating
+        const reviews = await Review.find({ property: booking.property });
+        const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
+        const averageRating = totalRating / reviews.length;
+
+        await Property.findByIdAndUpdate(booking.property, {
+            averageRating,
+            reviewCount: reviews.length
+        });
+
+        res.json({
+            success: true,
+            message: "Review added successfully.",
+            review
+        });
+
+    } catch (error) {
+        console.error("Review error", error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+},
     getReview: async (req, res) => {
-        try {
-            const propertyId = req.params.id;
-            const review = await Review.find({ property: propertyId }).populate("user", "name");
-            if (review.length === 0) {
-                return res.statue = s(200).json({
-                    success: true,
-                    message: "No reviews yet"
-                });
-            }
-            res.status(200).json({
+    try {
+        const propertyId = req.params.id;
+        const reviews = await Review.find({ property: propertyId }).populate("user", "name");
+
+        if (reviews.length === 0) {
+            return res.status(200).json({
                 success: true,
-                count: review.length,
-                review
+                message: "No reviews yet",
+                averageRating: 0,
+                count: 0,
+                reviews: []
             });
-
         }
-        catch (error) {
-            console.error("Review error", error);
-            return res.status(500).json({
-                success: false,
-                message: "Internal server error"
-            })
 
-        }
-    },
+ 
+        const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
+        const averageRating = totalRating / reviews.length;
+
+        console.log("reviews", reviews);
+        res.status(200).json({
+            success: true,
+            count: reviews.length,
+            averageRating,         
+            reviews
+        });
+
+    } catch (error) {
+        console.error("Review error", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+},
     WishList: async (req, res) => {
         try {
             const propertyId = req.params.id;

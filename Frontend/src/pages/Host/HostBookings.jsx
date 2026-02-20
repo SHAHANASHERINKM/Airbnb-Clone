@@ -34,7 +34,6 @@ function HostBookings() {
 
   return (
     <div>
-      {/* Heading */}
       <h1 className="text-2xl font-bold mb-1 text-dark">
         Bookings
       </h1>
@@ -45,7 +44,6 @@ function HostBookings() {
 
         <table className="min-w-[700px] w-full text-left">
 
-          {/* Table head */}
           <thead className="bg-gray-50 border-b">
             <tr className="text-gray-600 text-sm">
               <th className="py-3 px-4">Property Name</th>
@@ -57,7 +55,6 @@ function HostBookings() {
             </tr>
           </thead>
 
-          {/* Table body */}
           <tbody>
             {bookings.map((booking) => (
               <tr key={booking._id} className="border-b h-16 text-sm hover:bg-gray-50">

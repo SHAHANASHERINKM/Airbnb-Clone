@@ -4,29 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function Properties() {
 
-  // demo data (replace with API data)
-  //   const [properties, setProperties] = useState([
-  //     {
-  //       _id: "1",
-  //       title: "Luxury Beach Villa",
-  //       location: "Goa, India",
-  //       hostName: "Sarah",
-  //       pricePerNight: 4500,
-  //       status: "pending",
-  //       image:
-  //         "https://images.unsplash.com/photo-1505691938895-1758d7feb511",
-  //     },
-  //     {
-  //       _id: "2",
-  //       title: "Mountain Cabin",
-  //       location: "Manali, India",
-  //       hostName: "John",
-  //       pricePerNight: 3200,
-  //       status: "approved",
-  //       image:
-  //         "https://images.unsplash.com/photo-1494526585095-c41746248156",
-  //     },
-  //   ]);
   const [properties, setProperties] = useState([])
 
   const [filter, setFilter] = useState("all");
@@ -89,9 +66,6 @@ export default function Properties() {
       alert(error?.response?.data?.message || "something wrong")
     }
   }
-
-
-
 
   return (
     <div className="w-full">

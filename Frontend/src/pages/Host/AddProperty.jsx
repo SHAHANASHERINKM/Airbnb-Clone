@@ -268,7 +268,6 @@ let res;
           />
         </div>
 
-        {/* Location */}
         <div>
           <label className="block mb-1 font-medium">Location</label>
           <input
@@ -279,7 +278,6 @@ let res;
           />
         </div>
 
-        {/* Room + Property Type */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 font-medium">Room Type</label>
@@ -312,7 +310,6 @@ let res;
           </div>
         </div>
 
-        {/* Numbers with labels */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 
           <div>
@@ -353,7 +350,6 @@ let res;
 
         </div>
 
-        {/* Price */}
         <div>
           <label className="block mb-1 font-medium">Price Per Night (₹)</label>
           <input
@@ -365,7 +361,6 @@ let res;
           />
         </div>
 
-        {/* Amenities (PREDEFINED) */}
         <div>
           <label className="block mb-2 font-medium">Amenities</label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -405,7 +400,6 @@ let res;
         </div>
 
 
-        {/* Instructions */}
         <div>
           <label className="block mb-1 font-medium">Instructions</label>
           <textarea
@@ -416,7 +410,6 @@ let res;
           />
         </div>
 
-        {/* Images */}
         <div>
           <label className="block mb-2 font-medium">
             Upload Exactly 5 Images
@@ -476,9 +469,6 @@ let res;
     </div>
   ))}
 </div>
-
-
-
 
         <button
           type="submit"

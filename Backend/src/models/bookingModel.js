@@ -49,6 +49,7 @@ const bookingSchema=new Schema({
         enum:["pending","paid","failed","refunded"],
         default:"pending"
     },
+    isReviewed:{type:Boolean,default:false},
     expiresAt:{type:Date}
 
 },{timestamps:true});

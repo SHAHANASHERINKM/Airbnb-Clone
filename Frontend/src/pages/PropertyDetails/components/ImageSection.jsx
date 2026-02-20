@@ -10,7 +10,6 @@ export default function ImageSection({ images }) {
     <div className="w-full mt-10">
       <div className="grid md:grid-cols-3 gap-4">
 
-        {/* Large Image */}
         <div className="md:col-span-2 h-64 md:h-[380px] rounded-lg overflow-hidden">
           <img
             src={mainImage.url}
@@ -19,7 +18,6 @@ export default function ImageSection({ images }) {
           />
         </div>
 
-        {/* Small Images Grid */}
         <div className="grid grid-cols-2 gap-4 h-64 md:h-[380px]">
           {smallImages.map((img) => (
             <div key={img._id} className="h-full rounded-lg overflow-hidden">

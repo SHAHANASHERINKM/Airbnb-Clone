@@ -61,12 +61,9 @@ export default function PropertyView() {
         }
       }
     
-
-
     return (
         <div className="w-full space-y-8">
 
-            {/* Header + Buttons */}
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
                     {property.title}
@@ -92,7 +89,6 @@ export default function PropertyView() {
                 )}
             </div>
 
-            {/* Location */}
             <div className="flex items-center gap-2 text-gray-500">
                 <MapPinIcon className="w-4 h-4" />
                 {data.location}
@@ -110,7 +106,6 @@ export default function PropertyView() {
                         />
                     </div>
 
-                    {/* Small Images Grid */}
                     <div className="grid grid-cols-2 gap-4 h-64 md:h-[380px]">
                         {smallImages.map((img) => (
                             <div key={img._id} className="h-full rounded-lg overflow-hidden">
@@ -126,7 +121,6 @@ export default function PropertyView() {
                 </div>
             </div>
 
-            {/* Property Details + Description */}
             <div className="bg-white rounded-2xl shadow-sm p-6 space-y-6">
 
                 <div>
@@ -153,7 +147,6 @@ export default function PropertyView() {
 
             </div>
 
-            {/* Amenities */}
             <div className="bg-white rounded-2xl shadow-sm p-6">
                 <h2 className="text-lg font-semibold text-[#0F766E] mb-4">
                     Amenities
@@ -177,7 +170,6 @@ export default function PropertyView() {
                 )}
             </div>
 
-            {/* Host Info */}
             <div className="bg-white rounded-2xl shadow-sm p-6 space-y-3">
                 <h2 className="text-lg font-semibold text-[#0F766E]">
                     Host Information
@@ -200,7 +192,6 @@ export default function PropertyView() {
                 )}
             </div>
 
-            {/* Pricing */}
             <div className="bg-white rounded-2xl shadow-sm p-6 space-y-3">
                 <h2 className="text-lg font-semibold text-[#0F766E]">
                     Pricing
@@ -214,7 +205,6 @@ export default function PropertyView() {
                 </p>
             </div>
 
-            {/* Submission Info */}
             <div className="bg-white rounded-2xl shadow-sm p-6 space-y-3">
                 <h2 className="text-lg font-semibold text-[#0F766E]">
                     Submission Info

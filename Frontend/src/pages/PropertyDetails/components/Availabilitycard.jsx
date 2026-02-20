@@ -11,19 +11,13 @@ function Availabilitycard({ property }) {
   const [guests, setGuests] = useState(1);
   const token = useSelector(state => state.auth.token);
   const userId = useSelector(state => state.auth?.user?.id)
-  // console.log("user",userId)
   const navigate = useNavigate();
   const hostId = property.host._id;
-  // console.log("host",hostId)
   const isHost = userId === hostId;
-
-
 
   useEffect(() => {
     setAvailable(null);
   }, [checkIn, checkOut, guests]);
-
-
 
   const handleSubmit = async () => {
     if (!checkIn || !checkOut) {
@@ -57,7 +51,6 @@ function Availabilitycard({ property }) {
         return;
       }
 
-      // Check availability
       const result = await checkAvailability(data);
       console.log("Availability Result:", result);
 
@@ -74,8 +67,6 @@ function Availabilitycard({ property }) {
       alert(message);
     }
   };
-
-
 
   return (
     <div className="w-full md:w-[360px] bg-white border border-gray-200 shadow-lg rounded-2xl p-6">
@@ -128,9 +119,6 @@ function Availabilitycard({ property }) {
         />
 
       </div>
-
-
-
 
       {available === true && (<p className="text-green-600 text-center mt-4 font-semibold">Dates are available</p>)}
       {available === false && (<p className="text-green-600 text-center mt-4 font-semibold">Dtaes not availbale</p>)}

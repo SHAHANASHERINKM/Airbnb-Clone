@@ -3,23 +3,23 @@ import { fetchAllBookingsAdmin } from "../../services/propertyService";
 
 export default function BookingManagement() {
 
-const [bookings,setBookings]=useState([]);
+  const [bookings, setBookings] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchBookings = async () => {
-      try{
-        const res=await fetchAllBookingsAdmin();
-        console.log("res",res.bookings)
-        
+      try {
+        const res = await fetchAllBookingsAdmin();
+        console.log("res", res.bookings)
+
         setBookings(res.bookings);
 
       }
-      catch(error){
+      catch (error) {
         alert(error?.response?.data?.message || "something wrong")
       }
     }
     fetchBookings();
-  },[])
+  }, [])
 
   const [filter, setFilter] = useState("all");
 
@@ -81,11 +81,10 @@ const [bookings,setBookings]=useState([]);
           <button
             key={item}
             onClick={() => setFilter(item)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-              filter === item
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filter === item
                 ? "bg-primary text-white"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
+              }`}
           >
             {item}
           </button>
@@ -122,12 +121,12 @@ const [bookings,setBookings]=useState([]);
                 >
                   <td className="px-4 font-medium">{booking.user.name}</td>
                   <td>
-  {booking.property ? (
-    booking.property.title
-  ) : (
-    <span className="text-red-500">Property removed</span>
-  )}
-</td>
+                    {booking.property ? (
+                      booking.property.title
+                    ) : (
+                      <span className="text-red-500">Property removed</span>
+                    )}
+                  </td>
                   <td className="px-4">
                     {new Date(booking.checkIn).toISOString().split("T")[0]}
                   </td>
@@ -138,15 +137,14 @@ const [bookings,setBookings]=useState([]);
 
                   <td className="px-4">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        booking.status === "confirmed"
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${booking.status === "confirmed"
                           ? "bg-green-100 text-green-700"
                           : booking.status === "pending"
-                          ? "bg-yellow-100 text-yellow-700"
-                          :booking.status==="cancelled"
-                          ?"bg-red-100 text-red-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}
+                            ? "bg-yellow-100 text-yellow-700"
+                            : booking.status === "cancelled"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-blue-100 text-blue-700"
+                        }`}
                     >
                       {booking.status}
                     </span>

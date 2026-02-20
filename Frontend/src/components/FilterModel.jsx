@@ -26,7 +26,6 @@ export default function FilterModel({closeModel,applyFilter}) {
 
         <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center ">
 
-            {/* Modal Box */}
             <div className="bg-white p-5 w-11/12 md:w-1/2 rounded-xl flex flex-col gap-4 relative ">
                 <button
                     onClick={() => closeModel(false)}
@@ -43,7 +42,6 @@ export default function FilterModel({closeModel,applyFilter}) {
                     <input type="text" placeholder="Where are you going?" className="border p-2 rounded w-full outline-none focus:border-secondary" value={location} onChange={(e)=>{setLocation(e.target.value)}}/>
                 </div>
 
-                {/* Price Range */}
                 <div className="flex flex-col gap-2">
                     <span className="font-medium">Price Range</span>
                     <div className="flex gap-2">
@@ -52,13 +50,11 @@ export default function FilterModel({closeModel,applyFilter}) {
                     </div>
                 </div>
 
-                {/* Guests */}
                 <div className="flex flex-col gap-2">
                     <span className="font-medium">Guests</span>
                     <input type="number" placeholder="Guests" className="border p-2 rounded w-full outline-none focus:border-secondary" value={guests} onChange={(e)=>{setGuests(e.target.valueAsNumber)}}/>
                 </div>
 
-                {/* Property Type */}
                 <div className="flex flex-col gap-2">
                     <span className="font-medium">Property Type</span>
                     <select className="border p-2 rounded w-full outline-none focus:border-secondary" value={propertyType} onChange={(e)=>{setPropertyType(e.target.value)}}>

@@ -82,10 +82,6 @@ function Signup() {
                 </p>
             </div>
 
-
-
-
-
             <div className="flex items-center justify-center px-4">
                 <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 border border-gray-200">
                     <h2 className="text-2xl font-bold text-center text-gray-800">

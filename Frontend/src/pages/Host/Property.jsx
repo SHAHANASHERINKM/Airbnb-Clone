@@ -21,14 +21,11 @@ function Property() {
         }
         fetchProperties();
     }, []);
-    console.log("proo", property);
+  
 
     const handleDelete = async (propertyId) => {
         const confirm = window.confirm("Are you sure to delete this property?");
         if (!confirm) return;
-
-        // console.log("iddds",propertyId)
-
         try {
             const res = await deleteProperty(propertyId);
             setProperty((prev) =>
@@ -41,11 +38,9 @@ function Property() {
         }
     }
 
-
-
     return (
         <div>
-            {/* Heading */}
+ 
             <h1 className="text-2xl font-bold mb-2 text-dark">
                 My Properties
             </h1>
@@ -53,8 +48,6 @@ function Property() {
             <p className="text-gray-500  mb-5">
                     Manage and view all your properties.
                 </p>
-
-            {/* Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 {property?.map((property) => (
@@ -63,14 +56,13 @@ function Property() {
                         className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition"
                         onClick={()=>navigate(`/property-details/${property._id}`)}
                     >
-                        {/* Image */}
+
                         <img
                             src={property.images?.[0]?.url}
                             alt={property.title}
                             className="h-48 w-full object-cover"
                         />
 
-                        {/* Content */}
                         <div className="p-4">
                             <h2 className="font-semibold text-lg truncate">
                                 {property.title}
@@ -84,7 +76,6 @@ function Property() {
                                 ₹{property.pricePerNight} / night
                             </p>
 
-                            {/* Status */}
                             <span
                                 className={`inline-block mt-3 px-3 py-1 rounded-full text-xs font-medium ${property.status === "approved"
                                         ? "bg-green-100 text-green-700"
@@ -111,9 +102,6 @@ function Property() {
 
                                 <button onClick={(e) =>{ e.stopPropagation();handleDelete(property._id)}} className="flex  items-center py-1 text-red-500 bg-red-50 px-5 rounded-lg hover:opacity-60">
                                     <TrashIcon className="w-4 h-4" />
-
-
-
                                 </button>
                             </div>
                         </div>

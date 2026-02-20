@@ -22,7 +22,7 @@ const reviewSchema=new Schema({
         max:5,
         required:true
     },
-    commnt:{
+    comment:{
         type:String,
         trim:true
     },

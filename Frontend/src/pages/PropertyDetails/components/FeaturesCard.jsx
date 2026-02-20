@@ -4,42 +4,36 @@ function FeaturesCard({ property }) {
   return (
     <div className="w-full bg-white border border-gray-200 shadow-lg rounded-2xl p-6">
 
-      {/* Heading */}
       <h2 className="text-xl font-semibold mb-4">Room Details</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
 
-        {/* Bedrooms */}
+
         <div className="border rounded-xl p-3">
           <p className="text-gray-500 text-xs">Bedrooms</p>
           <p className="font-semibold">{property.bedrooms}</p>
         </div>
 
-        {/* Beds */}
         <div className="border rounded-xl p-3">
           <p className="text-gray-500 text-xs">Beds</p>
           <p className="font-semibold">{property.beds}</p>
         </div>
 
-        {/* Bathrooms */}
         <div className="border rounded-xl p-3">
           <p className="text-gray-500 text-xs">Bathrooms</p>
           <p className="font-semibold">{property.bathrooms} </p>
         </div>
 
-        {/* Property Type */}
         <div className="border rounded-xl p-3">
           <p className="text-gray-500 text-xs">Property Type</p>
           <p className="font-semibold">{property.propertyType} </p>
         </div>
 
-        {/* Room Type */}
         <div className="border rounded-xl p-3">
           <p className="text-gray-500 text-xs">Room Type</p>
           <p className="font-semibold">{property.roomType} </p>
         </div>
 
-        {/* Guests */}
         <div className="border rounded-xl p-3">
           <p className="text-gray-500 text-xs">Guests</p>
           <p className="font-semibold">{property.maxGuests}</p>

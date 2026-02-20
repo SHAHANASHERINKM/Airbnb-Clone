@@ -115,7 +115,7 @@ function HostList() {
                                                         ? "bg-yellow-100 text-yellow-700"
                                                         : host.hostStatus === "blocked"
                                                             ? "bg-red-100 text-red-700"
-                                                            : "bg-gray-100 text-gray-700"   // rejected
+                                                            : "bg-gray-100 text-gray-700"   
                                                 }`}
                                         >
                                             {host.hostStatus}
@@ -136,8 +136,6 @@ function HostList() {
                                         )}
 
                                     </td>
-
-
                                 </tr>
                             ))
                         )}

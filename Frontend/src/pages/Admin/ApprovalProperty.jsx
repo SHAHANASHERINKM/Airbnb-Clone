@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import { approveProperty, fetchApprovalPropertiesAdmin, fetchPropertiesAdmin, rejectProperty } from "../../services/propertyService";
 
 export default function ApprovalProperty() {
-
- 
   const [properties, setProperties] = useState([])
-
   const [filter, setFilter] = useState("all");
-
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -18,6 +14,7 @@ export default function ApprovalProperty() {
 
       }
       catch (error) {
+        alert(error?.response?.data?.message || "something wrong")
 
       }
     }
@@ -61,9 +58,6 @@ export default function ApprovalProperty() {
       alert(error?.response?.data?.message || "something wrong")
     }
   }
-
-
-
 
   return (
     <div className="w-full">

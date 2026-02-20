@@ -13,9 +13,7 @@ export default function PropertyCard({ property, isWishlisted }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
-
-
-
+  console.log("Porety from card",property)
   const handleOnclick = () => {
     navigate(`/property-details/${property._id}`)
   }
@@ -65,7 +63,7 @@ export default function PropertyCard({ property, isWishlisted }) {
       <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center shadow-sm">
         <StarIcon className="w-4 h-4 text-yellow-500 mr-1" />
         <span className="text-xs font-semibold text-gray-800">
-          {property.rating}
+          {property.averageRating}
         </span>
       </div>
     </div>
@@ -89,8 +87,6 @@ export default function PropertyCard({ property, isWishlisted }) {
             / night
           </span>
         </div>
-
-
       </div>
     </div>
   </div>

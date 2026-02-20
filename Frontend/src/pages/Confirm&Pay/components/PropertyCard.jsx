@@ -2,7 +2,6 @@ import { CalendarDaysIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
 function PropertyCard({property}) {
-    //proprty contains both property and booking details
     const bookingDetails=property;
     const propertyDetails=property.property;
     console.log(propertyDetails)
@@ -12,7 +11,6 @@ function PropertyCard({property}) {
   return (
     <div className="max-w-4xl mx-auto bg-white border rounded-xl shadow-md flex overflow-hidden mt-7 grid md:grid-cols-2">
 
-      {/* Left Image */}
       <div className="w-full">
         <img
           src={propertyDetails.images[0]?.url}
@@ -21,10 +19,8 @@ function PropertyCard({property}) {
         />
       </div>
 
-      {/* Right Details */}
       <div className="w-2/3 p-5 flex flex-col justify-between">
 
-        {/* Top */}
         <div>
           <h2 className="text-xl font-semibold text-gray-800">
            {propertyDetails.title}
@@ -40,7 +36,6 @@ function PropertyCard({property}) {
 
           </p>
 
-
           <p className="mt-2 text-gray-600 text-sm flex gap-2 ">
              <UserGroupIcon className="w-5 h-5 text-primary "/> Guests : {bookingDetails.guests}
           </p>
@@ -50,7 +45,7 @@ function PropertyCard({property}) {
           </p>
         </div>
 
-        {/* Bottom */}
+      
         <div className="flex items-center justify-between mt-4">
           <p className="text-lg font-bold text-primary">
             ₹{propertyDetails.pricePerNight} / night

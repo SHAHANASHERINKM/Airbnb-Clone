@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { approveHost, fetchHostReq, rejectHost } from "../../services/userService";
 
 export default function HostRequests() {
-
    
     const [hosts, setHosts] = useState([]);
 
@@ -90,8 +89,7 @@ export default function HostRequests() {
                                 {new Date(host.hostRequestedAt).toISOString().split("T")[0]}
                             </span>
                         </p>
-
-                        
+                  
                         <div className="flex gap-3 mt-5">
                             <button onClick={()=>handleApprove(host.id)} className="flex-1 bg-primary text-white py-2 rounded-lg font-medium hover:opacity-90 transition">
                                 Approve

@@ -31,16 +31,12 @@ function AdminLayout() {
 
     return (
         <div className="h-screen flex bg-gray-50 overflow-hidden">
-
-
             <button
                 onClick={() => setOpen(!open)}
                 className="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-lg shadow"
             >
                 <Bars3Icon className="w-6 h-6" />
             </button>
-
-
             <aside
                 className={`
           fixed md:static top-0 left-0 h-screen overflow-hidden w-64 bg-white border-r shadow-sm p-6
@@ -144,8 +140,6 @@ function AdminLayout() {
 
                 </nav>
             </aside>
-
-
             <main className="flex-1 p-6 overflow-y-auto md:p-8 mt-10 w-full">
                 <Outlet />
             </main>

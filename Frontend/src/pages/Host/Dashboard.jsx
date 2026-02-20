@@ -10,12 +10,11 @@ function Dashboard() {
   useEffect(() => {
     const fetchBookings = async () => {
       const bookings = await fetchHostBookings(true);
-      // console.log("bookings", bookings);
+   
       setBookings(bookings);
     }
     const fetchProperty = async () => {
       const property = await fetchHostProperties();
-      // console.log("prop",property);
       setProperties(property);
     }
     fetchBookings();
@@ -76,7 +75,6 @@ function Dashboard() {
             <tbody>
               {bookings?.bookings?.length === 0 ? (
 
-                // 🔥 No bookings row
                 <tr>
                   <td
                     colSpan="5"
@@ -88,7 +86,6 @@ function Dashboard() {
 
               ) : (
 
-                // Normal bookings list
                 bookings?.bookings.map((booking) => (
                   <tr key={booking._id} className="border-b h-16 text-sm">
                     <td className="py-3 font-medium">

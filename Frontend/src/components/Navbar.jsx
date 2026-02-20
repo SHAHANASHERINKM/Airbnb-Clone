@@ -17,13 +17,9 @@ function Navbar() {
     const user = useSelector(state => state.auth.user);
     console.log("user from navbar", user);
     const [isHostReq, setIsHostReq] = useState(false);
-    // console.log("usersts",user.hostStatus)
 
     useEffect(() => {
-        //  if(user.hostStatus==="pending"){
-
-        //  }
-
+ 
         const handleClickOutside = (event) => {
             if (profileRef.current && !profileRef.current.contains(event.target)) {
                 setProfileOpen(false);
@@ -53,14 +49,10 @@ function Navbar() {
             console.log("response:", res);
             alert(res.message);
             setIsHostReq(true)
-
-
-
         }
         catch (err) {
             alert(err.response?.data?.message || "Something went wrong");
         }
-
 
     }
 
@@ -171,11 +163,7 @@ function Navbar() {
 
                         </div>
                     )}
-
-
                 </div>
-
-
             </nav>
         </header>
     )

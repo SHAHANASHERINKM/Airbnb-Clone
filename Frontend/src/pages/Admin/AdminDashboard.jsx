@@ -3,6 +3,7 @@ import { UserCircleIcon } from '@heroicons/react/24/solid'
 import React, { useEffect, useState } from 'react'
 import { fetchDashboardCounts, fetchRecentHostReq, fetchRecentPropertyReq } from '../../services/propertyService'
 import { approveHost, rejectHost } from '../../services/userService';
+import { useNavigate } from 'react-router-dom';
 
 function AdminDashboard() {
   const [reqHost, setReqHost] = useState([]);
@@ -52,8 +53,6 @@ function AdminDashboard() {
 
       }
     }
-    
-
     fetchRecentHostRequest();
     RecentPropertyReq();
     dashboardCounts();
@@ -63,8 +62,6 @@ function AdminDashboard() {
     try {
       const res = await approveHost(hostId);
       const updatedUser = res.user;
-
-
       setReqHost(prev => prev.filter(user => user.id !== updatedUser._id));
       alert(" Approved Successfully")
 
@@ -123,8 +120,6 @@ function AdminDashboard() {
         </div>
 
       </div>
-
-
 
 
       {/* ////////////////////////////////////////////// */}
@@ -248,23 +243,13 @@ function AdminDashboard() {
                     <td className='flex gap-4 py-3 '>
                       <button onClick={() => navigate(`/admin/viewProperty/${property._id}`)} className='rounded-md bg-primary text-white px-2 py-2'>Review</button>
                     </td>
-
-
-
-
                   </tr>
                 ))
               )}
             </tbody>
-
-
           </table>
         </div>
       </div>
-
-
-
-
     </div>
   )
 }

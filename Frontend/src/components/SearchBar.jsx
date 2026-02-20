@@ -24,8 +24,6 @@ function SearchBar() {
         navigate("/explore")
     }
 
-
-
     return (
         <div className='relative w-full flex justify-center mt-6'>
             {/* desktopview */}
@@ -85,8 +83,6 @@ function SearchBar() {
                 </button>
             </div>
 
-
-            {/* mobile open */}
             <div className='md:hidden'>
                 <button
                     className='flex items-center justify-between w-full bg-white p-3 rounded-full shadow-md '

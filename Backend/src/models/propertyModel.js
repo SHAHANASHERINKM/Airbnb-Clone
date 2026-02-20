@@ -45,19 +45,20 @@ const propertySchema = new Schema({
     bathrooms: { type: Number, default: 1 },
     pricePerNight: { type: Number, required: true, min: 0 },
     images: {
-  type: [
-    {
-      url: { type: String, required: true },
-      public_id: { type: String, required: true }
-    }
-  ],
-  validate: [
-      (val) => val.length >= 1 && val.length <= 5,
-      "A property must have between 1 and 5 images"
-    ]
-},
-    amenities:{ type:[String],
-        enum:AMENITIES,
+        type: [
+            {
+                url: { type: String, required: true },
+                public_id: { type: String, required: true }
+            }
+        ],
+        validate: [
+            (val) => val.length >= 1 && val.length <= 5,
+            "A property must have between 1 and 5 images"
+        ]
+    },
+    amenities: {
+        type: [String],
+        enum: AMENITIES,
     },
     instructions: String,
     blockedDate: [{ startDate: Date, endDate: Date }],
@@ -66,9 +67,17 @@ const propertySchema = new Schema({
         enum: ["draft", "pending", "approved", "rejected"],
         default: "draft"
     },
-    rating: { type: Number, default: 0 },
-    reviewCount: { type: Number, default: 0 },
-    isActive: { type: Boolean, default: true }
+   
+   
+    isActive: { type: Boolean, default: true },
+    averageRating: {
+        type: Number,
+        default: 5
+    },
+    reviewCount: {
+        type: Number,
+        default: 0
+    }
 
 }, { timestamps: true });
 

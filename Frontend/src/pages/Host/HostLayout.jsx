@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import {  ArrowLeftStartOnRectangleIcon, Bars3Icon, BuildingOfficeIcon, CalendarDateRangeIcon, HomeIcon, PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
-
-
-
 function HostLayout() {
   const [open, setOpen] = useState(false);
 
@@ -19,7 +16,6 @@ function HostLayout() {
         <Bars3Icon className="w-6 h-6" />
       </button>
 
-    
       <aside
         className={`
           fixed md:static top-0 left-0 h-screen overflow-hidden w-64 bg-white border-r shadow-sm p-6

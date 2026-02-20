@@ -45,7 +45,6 @@ function ConfirmAndPay() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
 
-        {/* LEFT SECTION */}
         <div className="col-span-2">
           <div className="max-w-4xl space-y-6">
 
@@ -56,7 +55,6 @@ function ConfirmAndPay() {
           </div>
         </div>
 
-        {/* RIGHT PAYMENT CARD */}
         <div className="w-full lg:col-span-1">
          <PaymentSummaryCard property={reservedProperty}/>
         </div>

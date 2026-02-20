@@ -25,7 +25,6 @@ function PropertyGrid({ properties, limit }) {
                 );
 
                 console.log(isWishlisted)
-
                 return (
                     <PropertyCard
                         key={property._id}
@@ -34,7 +33,6 @@ function PropertyGrid({ properties, limit }) {
                     />
                 );
             })}
-
         </div>
     );
 }

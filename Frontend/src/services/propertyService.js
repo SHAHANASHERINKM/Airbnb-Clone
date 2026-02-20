@@ -3,8 +3,6 @@ import { data } from "react-router-dom";
 
 import api from "./Api";
 
-
-// all api calls related to properties
 export const getProperties = async (filters) => {
     const API_URL = import.meta.env.VITE_BASE_URL + "users/search-properties"
 
@@ -299,5 +297,29 @@ export const fetchAllBookingsAdmin=async()=>{
     }
     catch(error){
         throw error;
+    }
+}
+
+export const fetchPropertyReview=async(propertyId)=>{
+    try{
+        const res=await api.get(`users/review/${propertyId}`);
+        console.log("review",res.data)
+        return res.data;
+
+    }
+    catch(error){
+        throw error;
+
+    }
+}
+
+export const addPropertyReview=async(data)=>{
+    try{
+        const res=await api.post("users/review",data);
+        return res.data;
+    }
+    catch(error){
+        throw error;
+
     }
 }

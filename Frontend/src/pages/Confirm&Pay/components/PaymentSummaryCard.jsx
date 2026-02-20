@@ -50,15 +50,12 @@ function PaymentSummaryCard({ property }) {
     return (
         <div className="bg-white border rounded-xl shadow-lg p-4 sm:p-6 w-full mt-7">
 
-            {/* ALERT */}
             <div className="bg-red-100 text-red-600 px-3 py-2 rounded-md text-sm font-medium mb-4">
                 ⚠️ Your reservation will expire in 15 minutes
             </div>
 
-            {/* RESPONSIVE GRID */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-                {/* LEFT - PRICE */}
                 <div className="space-y-3">
                     <h2 className="text-lg font-semibold text-gray-800">Price Details</h2>
 
@@ -77,7 +74,6 @@ function PaymentSummaryCard({ property }) {
                     </button>
                 </div>
 
-                {/* RIGHT - TIMER */}
                 <div className="flex flex-col items-center justify-center bg-bg border rounded-xl p-4 w-full">
                     <p className="text-sm text-gray-600 mb-2 text-center">
                         Time left to complete payment
