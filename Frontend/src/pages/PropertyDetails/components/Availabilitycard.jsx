@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { checkAvailability, createBooking } from '../../../services/propertyService';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { showPopup } from '../../../utils/popupUtils';
 
 function Availabilitycard({ property }) {
   const [checkIn, setCheckIn] = useState("");
@@ -21,7 +22,7 @@ function Availabilitycard({ property }) {
 
   const handleSubmit = async () => {
     if (!checkIn || !checkOut) {
-      alert("Please select both checkin and checkout");
+      showPopup("Please select both checkin and checkout");
       return;
     }
 
@@ -35,7 +36,7 @@ function Availabilitycard({ property }) {
     try {
       if (available) {
         if(!userId){
-          alert("You must login first");
+          showPopup("You must login first");
           navigate("/login");
           return;
         }
@@ -44,7 +45,7 @@ function Availabilitycard({ property }) {
         console.log("booking id", bookingResult.booking._id)
         const bookingId = bookingResult.booking._id;
 
-        alert(bookingResult.message);
+        showPopup(bookingResult.message);
         navigate(`/payment/${bookingId}`)
 
 
@@ -64,7 +65,7 @@ function Availabilitycard({ property }) {
     } catch (error) {
       console.error("Error:", error);
       const message = error.response?.data?.message || "Something went wrong";
-      alert(message);
+      showPopup(message);
     }
   };
 

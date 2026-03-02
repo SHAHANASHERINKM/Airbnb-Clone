@@ -18,7 +18,7 @@ function PropertyGrid({ properties, limit }) {
     }
 
     return (
-        <div className='grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4 md:gap-14'>
+        <div className='grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4  md:gap-14'>
            
             {displayedProperties.map((property) => {
                 const isWishlisted = wishlistItems?.some(

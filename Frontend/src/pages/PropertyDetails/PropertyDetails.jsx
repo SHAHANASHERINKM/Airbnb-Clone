@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import Navbar from '../../components/Navbar'
+import { showPopup } from '../../utils/popupUtils';
 import { useParams } from 'react-router-dom';
 import { fetchPropertyReview, getSingleProperty } from '../../services/propertyService';
 import { useState } from 'react';
@@ -38,7 +39,7 @@ function PropertyDetails() {
                 setReviews(res.reviews);
             }
             catch(error){
-                alert(error?.response?.data.message || "something wrong");
+                showPopup(error?.response?.data.message || "something wrong");
 
             }
         }

@@ -4,6 +4,7 @@ import { addPropertyReview } from '../services/propertyService'
 import { CalendarDateRangeIcon } from '@heroicons/react/16/solid';
 import { CalendarDaysIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
+import { showPopup } from '../utils/popupUtils';
 
 function Bookings() {
     const [bookings, setBookings] = useState([]);
@@ -48,11 +49,11 @@ function Bookings() {
                 const refundText = res.refundAmount ?
                     `Refund:₹${res.refundAmount}`
                     : "";
-                alert(res.message + refundText);
+                showPopup(res.message + refundText);
             }
         }
         catch (error) {
-            alert(error.response?.data?.message || "something wrong")
+            showPopup(error.response?.data?.message || "something wrong")
 
         }
 
@@ -69,13 +70,13 @@ function Bookings() {
         try {
             const res = await addPropertyReview(data);
             if (res?.message || res?.success) {
-                alert(res.message || 'Review added successfully');
+                showPopup(res.message || 'Review added successfully');
             }
             setReviewOpen(false);
             setSelectedBooking(null);
         }
         catch (error) {
-            alert(error.response?.data?.message || "something wrong")
+            showPopup(error.response?.data?.message || "something wrong")
         }
     }
 

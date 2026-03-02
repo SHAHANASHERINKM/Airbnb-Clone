@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { deleteProperty, fetchHostProperties } from "../../services/propertyService";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { showPopup } from "../../utils/popupUtils";
 
 function Property() {
 
@@ -16,7 +17,7 @@ function Property() {
                 setProperty(res.properties);
             }
             catch (error) {
-                alert(error?.response?.data.message);
+                showPopup(error?.response?.data.message);
             }
         }
         fetchProperties();
@@ -31,10 +32,10 @@ function Property() {
             setProperty((prev) =>
                 prev.filter((property) => property._id !== propertyId)
             );
-            alert(res.message)
+            showPopup(res.message)
         }
         catch (error) {
-            alert(error?.response?.data.message);
+            showPopup(error?.response?.data.message);
         }
     }
 

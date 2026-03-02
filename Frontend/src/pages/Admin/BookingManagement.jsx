@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllBookingsAdmin } from "../../services/propertyService";
+import { showPopup } from '../../utils/popupUtils';
 
 export default function BookingManagement() {
 
@@ -15,7 +16,7 @@ export default function BookingManagement() {
 
       }
       catch (error) {
-        alert(error?.response?.data?.message || "something wrong")
+        showPopup(error?.response?.data?.message || "something wrong")
       }
     }
     fetchBookings();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { blockUser, getUsers, unblockUser } from '../../services/userService'
+import { showPopup } from '../../utils/popupUtils';
 
 function UsersList() {
     const [users, setUsers] = useState([]);
@@ -11,7 +12,7 @@ function UsersList() {
                 setUsers(res.users)
             }
             catch (error) {
-                alert(error?.response?.data?.message || "something wrong")
+                showPopup(error?.response?.data?.message || "something wrong")
             }
         }
         fetchUsers();
@@ -29,11 +30,9 @@ function UsersList() {
                     user.id === updatedUser.id ? updatedUser : user
                 )
             );
-              alert(res.message);
-
-        }
-        catch(error) {
-                  alert(error?.response?.data?.message || "Failed to approve host");
+            showPopup(res.message);
+        } catch (error) {
+            showPopup(error?.response?.data?.message || "Failed to approve host");
         }
     }
 
@@ -47,11 +46,10 @@ function UsersList() {
                     users.id === updatedUser.id ? updatedUser : users
                 )
             );
-              alert(res.message);
-
+            showPopup(res.message);
         }
         catch(error){
-      alert(error?.response?.data?.message || "Failed to approve host");
+            showPopup(error?.response?.data?.message || "Failed to approve host");
         }
     }
 

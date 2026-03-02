@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { store } from "../../redux/store";
 import logo from "../../assets/logo.svg";
 import { signup } from "../../services/userService";
+import { showPopup } from "../../utils/popupUtils";
 
 function Signup() {
     const [email, setEmail] = useState("");
@@ -49,7 +50,7 @@ function Signup() {
             localStorage.setItem("user", JSON.stringify(result.user));
             localStorage.setItem("token", result.token);
             if (result.success) {
-                alert("Login successfull");
+                showPopup("Login successfull");
                 if (result.user.role === "admin") {
                     navigate("/admin/dashboard")
                 }
@@ -65,7 +66,7 @@ function Signup() {
                 err.response?.data?.message ||
                 err.response?.data ||
                 "Server error. Check backend.";
-            alert(message);
+            showPopup(message);
         }
     };
 

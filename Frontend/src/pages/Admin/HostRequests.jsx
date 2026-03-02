@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { approveHost, fetchHostReq, rejectHost } from "../../services/userService";
+import { showPopup } from '../../utils/popupUtils';
 
 export default function HostRequests() {
    
@@ -15,7 +16,7 @@ export default function HostRequests() {
                 setHosts(res.users);
             }
             catch (error) {
-                alert(error?.response?.data?.message || "Failed to approve host");
+                showPopup(error?.response?.data?.message || "Failed to approve host");
 
             }
         }
@@ -29,10 +30,10 @@ export default function HostRequests() {
     
     
           setHosts(prev => prev.filter(host => host.id !== updatedHost._id));
-          alert(" Approved Successfully")
+          showPopup(" Approved Successfully")
     
         } catch (error) {
-          alert(error?.response?.data?.message || "Failed to approve host");
+          showPopup(error?.response?.data?.message || "Failed to approve host");
         }
       };
     
@@ -43,10 +44,10 @@ export default function HostRequests() {
     
     
           setHosts(prev => prev.filter(host => host.id !== updatedHost.id));
-          alert("Rejected successfully")
+          showPopup("Rejected successfully")
     
         } catch (error) {
-          alert(error?.response?.data?.message || "Failed to reject host");
+          showPopup(error?.response?.data?.message || "Failed to reject host");
         }
       };
 

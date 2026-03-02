@@ -3,6 +3,7 @@ import { CurrencyRupeeIcon } from '@heroicons/react/16/solid'
 import { CurrencyDollarIcon, MapPinIcon, UserGroupIcon } from '@heroicons/react/24/outline'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { showPopup } from '../utils/popupUtils';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { HeartIcon } from '@heroicons/react/16/solid'
@@ -29,7 +30,7 @@ export default function PropertyCard({ property, isWishlisted }) {
       const res = await dispatch(toggleWishlistApi(property._id)).unwrap();
       console.log("Wishlist response:", res);
     } catch (error) {
-      alert(error?.message || "Wishlist error");
+      showPopup(error?.message || "Wishlist error");
     }
   }
  return (

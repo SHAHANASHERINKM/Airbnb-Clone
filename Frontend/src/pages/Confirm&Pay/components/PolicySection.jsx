@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCancellationPolicy } from "../../../services/propertyService";
+import { showPopup } from '../../../utils/popupUtils';
 
 function PolicySection() {
   const [policy, setPolicy] = useState(null);
@@ -11,7 +12,7 @@ function PolicySection() {
         setPolicy(response.policy);
       }
       catch (error) {
-        alert(error.response?.data?.message || "Error fetching policy");
+        showPopup(error.response?.data?.message || "Error fetching policy");
 
       }
       finally {

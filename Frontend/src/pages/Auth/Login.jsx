@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { store } from "../../redux/store";
 import logo from "../../assets/logo.svg";
 import { fetchWishlist } from "../../redux/slices/wishlistSlice";
+import { showPopup } from '../../utils/popupUtils';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -45,39 +46,38 @@ function Login() {
 
       localStorage.setItem("user", JSON.stringify(result.user));
       localStorage.setItem("token", result.token);
-     
-      if(result.success){
-        alert("Login successfull");
-        if(result.user.role==="admin"){
-          navigate("/admin/dashboard")
-        }
-        else{
-navigate("/");
-        }
-      
+
+      if (result.success) {
+        showPopup("Login successfull");
+        navigate("/admin/dashboard")
+      }
+      else {
+        navigate("/");
       }
 
-    } catch (err) {
+    }
+
+    catch (err) {
       console.log("Full error:", err);
       const message =
         err.response?.data?.message ||
         err.response?.data ||
         "Server error. Check backend.";
-      alert(message);
+      showPopup(message);
     }
   };
 
   return (
     <div className="grid md:grid-cols-2  gap-7 flex min-h-screen  ">
       <div className="w-full flex flex-col justify-center items-center  ">
-<img src={logo}  className="w-16 h-16"/>
+        <img src={logo} className="w-16 h-16" />
         <h1 className="text-6xl font-semibold text-primary tracking-wide font-serif">
-                    NestAway
-                </h1>
+          NestAway
+        </h1>
 
-                <p className="mt-4 text-lg text-gray-500 font-medium tracking-wide">
-                    Live in your destiny.
-                </p>
+        <p className="mt-4 text-lg text-gray-500 font-medium tracking-wide">
+          Live in your destiny.
+        </p>
       </div>
 
       <div className="flex items-center justify-center px-4">
@@ -112,16 +112,16 @@ navigate("/");
             <button type="submit" className="w-full bg-primary text-white py-2 rounded-md">
               Login
             </button>
-                 
-<Link to="/signup" className="block mt-4 text-center text-sm text-gray-600 hover:text-primary">
-  Don’t have an account? Signup
-</Link>
+
+            <Link to="/signup" className="block mt-4 text-center text-sm text-gray-600 hover:text-primary">
+              Don’t have an account? Signup
+            </Link>
 
           </form>
         </div>
       </div>
     </div>
-   
+
   );
 }
 

@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { fetchUser, logout } from '../redux/slices/authSlice';
 import { becomeHost } from '../services/userService';
 import logo from "../assets/logo.svg";
+import { showPopup } from '../utils/popupUtils';
 
 
 
@@ -38,7 +39,7 @@ function Navbar() {
 
     const handleBecomeHost = async () => {
         if (!token) {
-            alert("You must login first");
+            showPopup("You must login first");
             navigate("/login");
             return;
         }
@@ -47,11 +48,11 @@ function Navbar() {
         try {
             const res = await becomeHost(token);
             console.log("response:", res);
-            alert(res.message);
+            showPopup(res.message);
             setIsHostReq(true)
         }
         catch (err) {
-            alert(err.response?.data?.message || "Something went wrong");
+            showPopup(err.response?.data?.message || "Something went wrong");
         }
 
     }
@@ -63,14 +64,14 @@ function Navbar() {
             console.log("updated user:", updatedUser);
 
             if (updatedUser?.hostStatus === "pending") {
-                alert("Your host request is still pending approval");
+                showPopup("Your host request is still pending approval");
             }
             else if (updatedUser?.hostStatus === "active") {
-                alert("Congratulations! Your host request has been approved");
+                showPopup("Congratulations! Your host request has been approved");
                 setIsHostReq(false);
             }
         } catch (err) {
-            alert("Error fetching status. Please try again");
+            showPopup("Error fetching status. Please try again");
         }
     }
 

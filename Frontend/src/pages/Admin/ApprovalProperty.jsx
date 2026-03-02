@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { approveProperty, fetchApprovalPropertiesAdmin, fetchPropertiesAdmin, rejectProperty } from "../../services/propertyService";
+import { showPopup } from '../../utils/popupUtils';
 
 export default function ApprovalProperty() {
   const [properties, setProperties] = useState([])
@@ -14,7 +15,7 @@ export default function ApprovalProperty() {
 
       }
       catch (error) {
-        alert(error?.response?.data?.message || "something wrong")
+        showPopup(error?.response?.data?.message || "something wrong")
 
       }
     }
@@ -31,12 +32,9 @@ export default function ApprovalProperty() {
         )
       );
       console.log(res);
-      alert(res.message);
-
-
-    }
-    catch (error) {
-      alert(error?.response?.data?.message || "something wrong")
+      showPopup(res.message);
+    } catch (error) {
+      showPopup(error?.response?.data?.message || "something wrong");
     }
   }
 
@@ -50,12 +48,9 @@ export default function ApprovalProperty() {
         )
       );
       console.log(res);
-      alert(res.message);
-
-
-    }
-    catch (error) {
-      alert(error?.response?.data?.message || "something wrong")
+      showPopup(res.message);
+    } catch (error) {
+      showPopup(error?.response?.data?.message || "something wrong");
     }
   }
 

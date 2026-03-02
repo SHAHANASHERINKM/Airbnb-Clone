@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropertyCard from './components/PropertyCard'
+import { showPopup } from '../../utils/popupUtils';
 import { useParams } from 'react-router-dom'
 import { getSingleBooking } from '../../services/propertyService';
 import { useSelector } from 'react-redux';
@@ -21,10 +22,8 @@ function ConfirmAndPay() {
 
       }
       catch (error) {
-        alert(error.response?.data?.message)
-
+        showPopup(error.response?.data?.message)
       }
-
     };
     fetchReservedProperty();
   }, [id]);

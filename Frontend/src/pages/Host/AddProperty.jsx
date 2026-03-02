@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { addProperty, getSingleProperty, updateProperty } from "../../services/propertyService";
 import { useNavigate, useParams } from "react-router-dom";
+import { showPopup } from "../../utils/popupUtils";
 
 
 const AMENITIES = [
@@ -123,7 +124,7 @@ const [removeImages, setRemoveImages] = useState([]);
     const files = Array.from(e.target.files);
 
     if (files.length !== 5) {
-      alert("Upload exactly 5 images");
+      showPopup("Upload exactly 5 images");
       return;
     }
 
@@ -172,7 +173,7 @@ const removeExistingImage = (publicId) => {
     e.preventDefault();
 
    if (!isEdit && images.length !== 5) {
-  alert("Please upload exactly 5 images");
+  showPopup("Please upload exactly 5 images");
   return;
 }
 
@@ -222,13 +223,13 @@ let res;
         res = await addProperty(submitData); // POST API
       }
       //  console.log("res",res)
-      alert(res.message);
+      showPopup(res.message);
       navigate("/host/property")
 
 
     } catch (error) {
       console.error(error);
-      alert(error.response?.data?.message || "Something went wrong");
+      showPopup(error.response?.data?.message || "Something went wrong");
     }
     finally {
       setLoading(false)

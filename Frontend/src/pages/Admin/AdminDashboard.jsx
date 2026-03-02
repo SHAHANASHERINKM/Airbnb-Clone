@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { fetchDashboardCounts, fetchRecentHostReq, fetchRecentPropertyReq } from '../../services/propertyService'
 import { approveHost, rejectHost } from '../../services/userService';
 import { useNavigate } from 'react-router-dom';
+import { showPopup } from '../../utils/popupUtils';
 
 function AdminDashboard() {
   const [reqHost, setReqHost] = useState([]);
@@ -22,7 +23,7 @@ function AdminDashboard() {
 
       }
       catch (error) {
-        alert(error?.response?.data?.message || "something wrong")
+        showPopup(error?.response?.data?.message || "something wrong")
 
       }
     }
@@ -48,8 +49,7 @@ function AdminDashboard() {
 
       }
       catch(error){
-                alert(error?.response?.data?.message || "something wrong")
-
+                showPopup(error?.response?.data?.message || "something wrong")
 
       }
     }
@@ -63,10 +63,10 @@ function AdminDashboard() {
       const res = await approveHost(hostId);
       const updatedUser = res.user;
       setReqHost(prev => prev.filter(user => user.id !== updatedUser._id));
-      alert(" Approved Successfully")
+      showPopup(" Approved Successfully")
 
     } catch (error) {
-      alert(error?.response?.data?.message || "Failed to approve host");
+      showPopup(error?.response?.data?.message || "Failed to approve host");
     }
   };
 
@@ -77,10 +77,10 @@ function AdminDashboard() {
 
 
       setReqHost(prev => prev.filter(user => user.id !== updatedUser._id));
-      alert("Rejected successfully")
+      showPopup("Rejected successfully")
 
     } catch (error) {
-      alert(error?.response?.data?.message || "Failed to reject host");
+      showPopup(error?.response?.data?.message || "Failed to reject host");
     }
   };
 

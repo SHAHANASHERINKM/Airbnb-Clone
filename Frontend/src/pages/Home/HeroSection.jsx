@@ -4,7 +4,7 @@ import SearchBar from '../../components/SearchBar'
 
 function HeroSection() {
   return (
-    <section className='relative w-full h-[500px] rounded-b-3xl overflow-hidden'>
+    <section className='relative w-full h-[500px] rounded-3xl overflow-hidden'>
         <img src={heroImage} 
         alt="Hero Image"
         className='absolute inset-0 w-full h-full object-cover' 

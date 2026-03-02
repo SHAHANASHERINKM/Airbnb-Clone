@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { approveProperty, fetchPropertiesAdmin, rejectProperty } from "../../services/propertyService";
 import { useNavigate } from "react-router-dom";
+import { showPopup } from "../../utils/popupUtils";
 
 export default function Properties() {
 
@@ -39,12 +40,10 @@ export default function Properties() {
         )
       );
       console.log(res);
-      alert(res.message);
+      showPopup(res.message);
 
-
-    }
-    catch (error) {
-      alert(error?.response?.data?.message || "something wrong")
+    } catch (error) {
+      showPopup(error?.response?.data?.message || "something wrong");
     }
   }
 
@@ -58,12 +57,9 @@ export default function Properties() {
         )
       );
       console.log(res);
-      alert(res.message);
-
-
-    }
-    catch (error) {
-      alert(error?.response?.data?.message || "something wrong")
+      showPopup(res.message);
+    } catch (error) {
+      showPopup(error?.response?.data?.message || "something wrong");
     }
   }
 
@@ -166,6 +162,17 @@ export default function Properties() {
                     Re-Approve
                   </button>
                 )}
+
+                
+                {property.status === "approved" && (
+                  <button 
+                  onClick={() => handleReject(property._id)}
+                    className="flex-1 bg-red-400 text-white rounded-lg py-2"
+                  >
+                    Reject
+                  </button>
+                )}
+
 
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { paymentApi } from "../../../services/propertyService";
 import { useNavigate } from "react-router-dom";
+import { showPopup } from '../../../utils/popupUtils';
 
 function PaymentSummaryCard({ property }) {
 
@@ -32,7 +33,7 @@ function PaymentSummaryCard({ property }) {
     const handleClick = async () => {
         try {
             const response = await paymentApi(bookingId);
-            alert(response.message);
+            showPopup(response.message);
             navigate("/bookings")
 
 
@@ -41,7 +42,7 @@ function PaymentSummaryCard({ property }) {
 
         }
         catch (error) {
-            alert(error.response?.data?.message);
+            showPopup(error.response?.data?.message);
 
         }
 

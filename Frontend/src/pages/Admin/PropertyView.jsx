@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MapPinIcon, UserIcon } from "@heroicons/react/24/outline";
 import { useParams } from "react-router-dom";
 import { approveProperty, getSingleProperty, rejectProperty } from "../../services/propertyService";
+import { showPopup } from '../../utils/popupUtils';
 
 export default function PropertyView() {
     const { propertyId } = useParams();
@@ -14,7 +15,7 @@ export default function PropertyView() {
                 console.log("response", res);
                 setProperty(res.property);
             } catch (error) {
-                alert(error?.response?.data?.message || "Something went wrong");
+                showPopup(error?.response?.data?.message || "Something went wrong");
             }
         };
 
@@ -35,31 +36,25 @@ export default function PropertyView() {
         try {
           const res = await approveProperty(propertyId);
           const updatedProperty = res.property;
-          setProperty(updatedProperty)
+          setProperty(updatedProperty);
           console.log(res);
-          alert(res.message);
-    
-    
+          showPopup(res.message);
+        } catch (error) {
+          showPopup(error?.response?.data?.message || "something wrong");
         }
-        catch (error) {
-          alert(error?.response?.data?.message || "something wrong")
-        }
-      }
-    
+      };
+
       const handleReject = async () => {
         try {
           const res = await rejectProperty(propertyId);
           const updatedProperty = res.property;
           setProperty(updatedProperty);
           console.log(res);
-          alert(res.message);
-    
-    
+          showPopup(res.message);
+        } catch (error) {
+          showPopup(error?.response?.data?.message || "something wrong");
         }
-        catch (error) {
-          alert(error?.response?.data?.message || "something wrong")
-        }
-      }
+      };
     
     return (
         <div className="w-full space-y-8">
